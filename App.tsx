@@ -1,5 +1,6 @@
 import React from 'react';
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { AuthProvider } from './components/providers/AuthProvider';
 import { Layout } from './components/Layout';
 import { Dashboard } from './pages/Dashboard';
@@ -25,41 +26,43 @@ import { AssetManager } from './pages/Assets/AssetManager';
 
 const App: React.FC = () => {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Dashboard />} />
+    <ErrorBoundary>
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Dashboard />} />
 
-            <Route path="brands" element={<BrandList />} />
-            <Route path="brands/:id" element={<BrandDetail />} />
+              <Route path="brands" element={<BrandList />} />
+              <Route path="brands/:id" element={<BrandDetail />} />
 
-            <Route path="scripts" element={<ScriptList />} />
-            <Route path="scripts/:id" element={<ScriptDetail />} />
+              <Route path="scripts" element={<ScriptList />} />
+              <Route path="scripts/:id" element={<ScriptDetail />} />
 
-            <Route path="productions" element={<ProductionList />} />
-            <Route path="productions/generate" element={<VideoGenerator />} />
-            <Route path="productions/images" element={<ImageGenerator />} />
-            <Route path="productions/audio" element={<PodcastStudio />} />
-            <Route path="productions/shots" element={<ShotDirector />} />
-            <Route path="assets" element={<AssetManager />} />
+              <Route path="productions" element={<ProductionList />} />
+              <Route path="productions/generate" element={<VideoGenerator />} />
+              <Route path="productions/images" element={<ImageGenerator />} />
+              <Route path="productions/audio" element={<PodcastStudio />} />
+              <Route path="productions/shots" element={<ShotDirector />} />
+              <Route path="assets" element={<AssetManager />} />
 
-            <Route path="analysis" element={<VideoAnalysis />} />
-            <Route path="analysis/image" element={<ImageAnalysis />} />
+              <Route path="analysis" element={<VideoAnalysis />} />
+              <Route path="analysis/image" element={<ImageAnalysis />} />
 
-            <Route path="trends" element={<TrendDashboard />} />
-            <Route path="locations" element={<LocationScout />} />
-            <Route path="repurpose" element={<Repurposer />} />
-            <Route path="live" element={<LiveAssistant />} />
+              <Route path="trends" element={<TrendDashboard />} />
+              <Route path="locations" element={<LocationScout />} />
+              <Route path="repurpose" element={<Repurposer />} />
+              <Route path="live" element={<LiveAssistant />} />
 
-            <Route path="reports" element={<ReportList />} />
-            <Route path="jobs" element={<Jobs />} />
+              <Route path="reports" element={<ReportList />} />
+              <Route path="jobs" element={<Jobs />} />
 
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Route>
-        </Routes>
-      </Router>
-    </AuthProvider>
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Route>
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 };
 
