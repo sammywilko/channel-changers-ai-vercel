@@ -4,7 +4,7 @@
  * Maintains same interface for minimal refactoring.
  */
 
-import { supabase, getUser } from '../lib/supabase';
+import { supabase, getUser, isSupabaseConfigured } from '../lib/supabase';
 import {
   Brand, BrandStatus,
   Script, ScriptStatus, ScriptTrack,
@@ -15,9 +15,16 @@ import {
 
 // Helper to get current user ID
 const getUserId = async () => {
+  if (!isSupabaseConfigured) return 'demo-user';
   const user = await getUser();
   if (!user) throw new Error('Not authenticated');
   return user.id;
+};
+
+// Demo mode check - return empty data if Supabase not configured
+const demoModeCheck = <T>(defaultValue: T): T | null => {
+  if (!isSupabaseConfigured) return defaultValue;
+  return null;
 };
 
 export const Db = {
@@ -25,6 +32,8 @@ export const Db = {
   // BRANDS
   // ============================================
   getBrands: async (): Promise<Brand[]> => {
+    if (!isSupabaseConfigured) return [];
+
     const { data, error } = await supabase
       .from('brands')
       .select('*')
@@ -87,6 +96,8 @@ export const Db = {
   // SCRIPTS
   // ============================================
   getScripts: async (): Promise<Script[]> => {
+    if (!isSupabaseConfigured) return [];
+
     const { data, error } = await supabase
       .from('scripts')
       .select(`
@@ -163,6 +174,8 @@ export const Db = {
   // PRODUCTIONS
   // ============================================
   getProductions: async (): Promise<Production[]> => {
+    if (!isSupabaseConfigured) return [];
+
     const { data, error } = await supabase
       .from('productions')
       .select(`
@@ -243,6 +256,8 @@ export const Db = {
   // JOBS
   // ============================================
   getJobs: async (): Promise<Job[]> => {
+    if (!isSupabaseConfigured) return [];
+
     const { data, error } = await supabase
       .from('jobs')
       .select('*')
