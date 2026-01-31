@@ -1,0 +1,7 @@
+{
+  "name": "Channel Changers AI",
+  "description": "Full-stack AI video production pipeline automating content from brand research to asset generation.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
