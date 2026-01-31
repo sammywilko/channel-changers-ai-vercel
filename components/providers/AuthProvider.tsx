@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { supabase, signIn, signUp, signOut, getSession, getUser } from '../../lib/supabase';
+import { supabase, signIn, signUp, signOut, getSession, getUser, isSupabaseConfigured } from '../../lib/supabase';
 import type { User, Session } from '@supabase/supabase-js';
 
 interface AuthContextType {
     user: User | null;
     session: Session | null;
     loading: boolean;
+    isConfigured: boolean;
     signIn: (email: string, password: string) => Promise<void>;
     signUp: (email: string, password: string) => Promise<void>;
     signOut: () => Promise<void>;
@@ -31,6 +32,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        // Skip auth initialization if Supabase is not configured
+        if (!isSupabaseConfigured) {
+            setLoading(false);
+            return;
+        }
+
         // Get initial session
         const initAuth = async () => {
             try {
@@ -93,6 +100,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 user,
                 session,
                 loading,
+                isConfigured: isSupabaseConfigured,
                 signIn: handleSignIn,
                 signUp: handleSignUp,
                 signOut: handleSignOut,
